@@ -1,0 +1,19 @@
+{
+  "name": "consumer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=development ./node_modules/.bin/electron . --debug=5858"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.0.0-beta",
+    "bootstrap-select": "^1.12.4",
+    "electron": "^1.7.9",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.5"
+  }
+}

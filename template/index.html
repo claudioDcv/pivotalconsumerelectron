@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/icono.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <title></title>
+  </head>
+  <body>
+    <section id="nav"></section>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+            <textarea name="slack-text" class="form-control" placeholder="Text publish to slack" id="slack-text"></textarea>
+            <br />
+            <button id="test-slack" class="btn btn-primary">Pubish to Slack</button>
+            <hr />
+            <div class="row">
+              <div class="col-md-8">
+                <label for="labels">Labels</label>
+                <select id="labels" class="selectpicker form-control" data-live-search="true"></select>
+              </div>
+              <div class="col-md-4">
+                <button type="submit" id="getStories" class="btn btn-block btn-primary btn-inline-form">Stories</button>
+              </div>
+            </div>
+            <label for="epics" class="hidden">Epics</label>
+            <select id="epics" class="form-control hidden"></select>
+
+            <div id="stories"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../static/comun.js" charset="utf-8"></script>
+  <script src="../node_modules/popper.js/dist/umd/popper.min.js" charset="utf-8"></script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+  <script src="../static/main.js" charset="utf-8"></script>
+  <script src="./index.js" charset="utf-8"></script>
+</html>
