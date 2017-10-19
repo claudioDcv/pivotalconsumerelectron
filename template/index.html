@@ -11,7 +11,7 @@
     <section id="nav"></section>
     <div class="container">
       <div class="row">
-        <div class="col">
+        <div class="col-6">
             <textarea name="slack-text" class="form-control" placeholder="Text publish to slack" id="slack-text"></textarea>
             <br />
             <button id="test-slack" class="btn btn-primary">Pubish to Slack</button>
@@ -29,6 +29,24 @@
             <select id="epics" class="form-control hidden"></select>
 
             <div id="stories"></div>
+        </div>
+        <div class="col-6">
+          <h2>Create Template</h2>
+          <form>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label for="token">Template</label>
+                  <input type="text" class="form-control" value="" id="template-string" placeholder="Template String">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <button type="submit" id="btn-add-template" class="btn btn-primary btn-inline-form">Add</button>
+                <button type="submit" id="btn-remove-templates" class="btn btn-danger btn-inline-form">x</button>
+              </div>
+            </div>
+          </form>
+          <div id="templates"></div>
         </div>
       </div>
     </div>

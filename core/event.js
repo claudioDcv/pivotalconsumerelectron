@@ -3,6 +3,20 @@ win = {}
 
 const mainEvent = store => {
 
+  ipcMain.on('add:template-string', (event, text)=> {
+    const templatesString = store.get('templates_string') || []
+    templatesString.push(text)
+    store.set('templates_string', templatesString)
+    event.sender.send(
+      'getall:template-string', store.get('templates_string') || [])
+  })
+
+  ipcMain.on('removeall:template-string', event => {
+    store.set('templates_string', [])
+    event.sender.send(
+      'getall:template-string', store.get('templates_string'))
+  })
+
   ipcMain.on('main:init', (event, arg)=> {
     event.sender.send(
       'auth:init',
@@ -10,7 +24,8 @@ const mainEvent = store => {
         pivotal_token: store.get('pivotal-token'),
         project_id: store.get('project_id'),
         slack_token: store.get('slack_token'),
-        channel_id: store.get('channel_id')
+        channel_id: store.get('channel_id'),
+        templates_string: store.get('templates_string')
       }
     )
   })

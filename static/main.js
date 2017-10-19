@@ -136,6 +136,25 @@ const mergeElements = data => {
   fn._('stories').innerHTML = dom
 }
 
+const templatesStringDom = templatesString => {
+  let dom = '<ul>'
+  templatesString.forEach(e => {
+    dom += `
+      <li>
+        <span class="added-action-icon">
+          <i
+           data-action-select
+           class="icono-plus"
+           data-type="template"
+           data-template-text="${e}"
+          ></i>
+        </span>${e}</li>
+    `
+  })
+  dom += '</ul>'
+  fn._('templates').innerHTML = dom
+}
+
 
 function initDom(args) {
   const token = args.pivotal_token
@@ -145,6 +164,7 @@ function initDom(args) {
 
   window.data.slack_token = args.slack_token
   window.data.channel_id = args.channel_id
+  window.data.templates_string = args.templates_string
 
 
   consumer.getMe(token, project_id, 'me', obj => {
@@ -172,6 +192,8 @@ function initDom(args) {
     }
     fn._('epics').innerHTML = n
   })
+
+  templatesStringDom(data.templates_string)
 }
 
 const init = () => {
@@ -186,6 +208,11 @@ const init = () => {
   })
 
   ipcRenderer.send('main:init')
+
+  ipcRenderer.on('getall:template-string', (event, templatesString) => {
+    fn._('template-string').value = ''
+    templatesStringDom(templatesString)
+  })
 }
 
 
