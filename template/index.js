@@ -5,6 +5,28 @@ const NAV = require('./parts/nav')
 
 fn._('nav').innerHTML = NAV('../static/logo.png', 'index')
 
+//Add template
+
+fn._('btn-add-template').addEventListener('click', event => {
+  event.preventDefault()
+  fn._('template-string').focus()
+  const text = fn._('template-string').value
+  if (text) {
+    ipcRenderer.send('add:template-string', text)
+  }
+})
+
+fn._('btn-remove-templates').addEventListener('click', event => {
+  event.preventDefault()
+  ipcRenderer.send('removeall:template-string')
+})
+
+fn._('btn-remove-templates').addEventListener('click', event => {
+  event.preventDefault()
+  ipcRenderer.send('removeall:template-string')
+})
+
+
 fn._('getStories').addEventListener('click', () => {
   const project_id = window.data.project_id
   const token = window.data.token
@@ -67,6 +89,12 @@ const handlerOnClick = event => {
         const member = data.storiesMember[dataset.memberId].member
         const formatMember = `## ${member.person.name}`
         addTextLine(formatMember)
+      } else if(dataset.type === 'template') {
+        addTextLine(dataset.templateText)
+      } else if(dataset.type === 'template:removebyid') {
+        const id = dataset.templateId
+        console.log(id);
+        ipcRenderer.send('removebyid:template-string', id)
       }
 
     }

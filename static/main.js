@@ -136,6 +136,53 @@ const mergeElements = data => {
   fn._('stories').innerHTML = dom
 }
 
+const templatesStringDom = templatesString => {
+  const templatesContainer = fn.remove(fn._('templates'))
+  const table = fn.create('table')
+  table.className = 'table table-sm'
+  const tbody = fn.create('tbody')
+
+  console.log(tbody);
+  templatesString.forEach(elm => {
+    const tr = fn.create('tr')
+
+    const tdBtnAddReport = fn.create('td')
+    tdBtnAddReport.style.maxWidth = '14px'
+    const span = fn.create('span')
+    const i = fn.create('i')
+    i.dataset.actionSelect = ''
+    i.className = 'icono-plus'
+    i.dataset.type = 'template'
+    i.dataset.templateText = elm.text
+    i.dataset.templateId = elm.id
+    span.className = 'added-action-icon'
+    fn.add(span, i)
+    fn.add(tdBtnAddReport, span)
+    fn.add(tr, tdBtnAddReport)
+
+    const td = fn.create('td')
+    const text = fn.text(elm.text)
+    fn.add(td, text)
+    fn.add(tr, td)
+
+    const tdBtn = fn.create('td')
+    tdBtn.style.maxWidth = '9px'
+    const btn = fn.create('button')
+    const deleteText = fn.text('×')
+    btn.dataset.actionSelect = ''
+    btn.dataset.type = 'template:removebyid'
+    btn.dataset.templateId = elm.id
+    btn.className = 'btn btn-sm btn-danger'
+    fn.add(btn, deleteText)
+    fn.add(tdBtn, btn)
+    fn.add(tr, tdBtn)
+
+    fn.add(tbody, tr)
+  })
+  fn.add(table, tbody)
+  fn.add(templatesContainer, table)
+}
+
 
 function initDom(args) {
   const token = args.pivotal_token
@@ -145,6 +192,7 @@ function initDom(args) {
 
   window.data.slack_token = args.slack_token
   window.data.channel_id = args.channel_id
+  window.data.templates_string = args.templates_string
 
 
   consumer.getMe(token, project_id, 'me', obj => {
@@ -172,6 +220,8 @@ function initDom(args) {
     }
     fn._('epics').innerHTML = n
   })
+
+  templatesStringDom(data.templates_string)
 }
 
 const init = () => {
@@ -186,6 +236,11 @@ const init = () => {
   })
 
   ipcRenderer.send('main:init')
+
+  ipcRenderer.on('getall:template-string', (event, templatesString) => {
+    fn._('template-string').value = ''
+    templatesStringDom(templatesString)
+  })
 }
 
 

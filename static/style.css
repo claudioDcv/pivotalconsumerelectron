@@ -1,3 +1,7 @@
+*::selection {
+    background: #CCCCCC;
+}
+
 .avatar {
   border-radius: 50%;
   font-size: 14px;
@@ -59,7 +63,7 @@
   z-index: 99999;
   top: 0;
 }
-.container{
+.container, .container-fluid > div{
   background: #f8f9fa;
   border: solid 1px #d3d4d5;
   padding: 15px;
@@ -67,6 +71,7 @@
   border-radius: 5px;
   margin-top: 85px;
 }
+
 
 .added-action-icon {
   background: #17a2b8;

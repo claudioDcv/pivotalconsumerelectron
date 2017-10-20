@@ -1,7 +1,43 @@
 const { ipcMain } = require('electron')
 win = {}
 
+const nextUID = (store, obj) => {
+  const n = store.get('uid_' + obj) + 1
+  console.log(n);
+  store.set('uid_' + obj, n)
+  return store.get('uid_' + obj)
+}
+const resetUID = (store, obj) => {
+  store.set('uid_' + obj, 0)
+  return 0
+}
+
 const mainEvent = store => {
+
+  ipcMain.on('add:template-string', (event, text)=> {
+    const templatesString = store.get('templates_string') || []
+    const n = nextUID(store, 'templates_string')
+    templatesString.push({
+      id: n,
+      text: text,
+    })
+    store.set('templates_string', templatesString)
+    event.sender.send(
+      'getall:template-string', store.get('templates_string') || [])
+  })
+
+  ipcMain.on('removeall:template-string', event => {
+    store.set('templates_string', [])
+    resetUID(store, 'templates_string')
+    event.sender.send('getall:template-string', store.get('templates_string'))
+  })
+
+  ipcMain.on('removebyid:template-string', (event, id) => {
+    const list = store.get('templates_string').filter(
+      e => parseInt(e.id) !== parseInt(id))
+    store.set('templates_string', list)
+    event.sender.send('getall:template-string', list)
+  })
 
   ipcMain.on('main:init', (event, arg)=> {
     event.sender.send(
@@ -10,12 +46,19 @@ const mainEvent = store => {
         pivotal_token: store.get('pivotal-token'),
         project_id: store.get('project_id'),
         slack_token: store.get('slack_token'),
-        channel_id: store.get('channel_id')
+        channel_id: store.get('channel_id'),
+        templates_string: store.get('templates_string')
       }
     )
   })
 
   ipcMain.on('index:init', (event, arg)=> {
+    if (!store.get('templates_string')) {
+      store.set('templates_string', [])
+    }
+    if (!store.get('uid_templates_string')) {
+      store.set('uid_templates_string', 0)
+    }
     event.sender.send(
       'token:init',
       store.get('pivotal-token'),
