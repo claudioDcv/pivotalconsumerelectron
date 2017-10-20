@@ -17,20 +17,6 @@
               <textarea name="slack-text" class="form-control" placeholder="Text publish to slack" id="slack-text"></textarea>
               <br />
               <button id="test-slack" class="btn btn-primary">Pubish to Slack</button>
-              <hr />
-              <div class="row">
-                <div class="col-md-8">
-                  <label for="labels">Labels</label>
-                  <select id="labels" class="selectpicker form-control" data-live-search="true"></select>
-                </div>
-                <div class="col-md-4">
-                  <button type="submit" id="getStories" class="btn btn-block btn-primary btn-inline-form">Stories</button>
-                </div>
-              </div>
-              <label for="epics" class="hidden">Epics</label>
-              <select id="epics" class="form-control hidden"></select>
-
-              <div id="stories"></div>
           </div>
           <div class="col-6">
             <form>
@@ -54,6 +40,19 @@
               </div>
             </form>
             <div id="templates"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="labels">Labels</label>
+            <select id="labels" class="selectpicker form-control" data-live-search="true"></select>
+          </div>
+          <div class="col-md-12">
+            <button type="submit" id="getStories" class="btn btn-block btn-primary btn-inline-form">Stories</button>
+          </div>
+          <div class="col-md-12">
+            <hr />
+            <div id="stories"></div>
           </div>
         </div>
       </div>

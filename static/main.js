@@ -139,7 +139,7 @@ const mergeElements = data => {
 const templatesStringDom = templatesString => {
   const templatesContainer = fn.remove(fn._('templates'))
   const table = fn.create('table')
-  table.className = 'table table-sm'
+  table.className = 'table table-sm table-responsive'
   const tbody = fn.create('tbody')
 
   console.log(tbody);
@@ -147,7 +147,6 @@ const templatesStringDom = templatesString => {
     const tr = fn.create('tr')
 
     const tdBtnAddReport = fn.create('td')
-    tdBtnAddReport.style.maxWidth = '14px'
     const span = fn.create('span')
     const i = fn.create('i')
     i.dataset.actionSelect = ''
@@ -166,7 +165,7 @@ const templatesStringDom = templatesString => {
     fn.add(tr, td)
 
     const tdBtn = fn.create('td')
-    tdBtn.style.maxWidth = '9px'
+    tdBtn.style.textAlign = 'right'
     const btn = fn.create('button')
     const deleteText = fn.text('×')
     btn.dataset.actionSelect = ''
@@ -214,11 +213,11 @@ function initDom(args) {
 
   consumer.get(token, project_id, 'epics', obj => {
     window.data.epics = obj
-    let n = ''
-    for (var i = 0; i < obj.value.length; i++) {
-      n += `<option value="${obj.value[i].id}">${obj.value[i].name}</option>`
-    }
-    fn._('epics').innerHTML = n
+    // let n = ''
+    // for (var i = 0; i < obj.value.length; i++) {
+    //   n += `<option value="${obj.value[i].id}">${obj.value[i].name}</option>`
+    // }
+    // fn._('epics').innerHTML = n
   })
 
   templatesStringDom(data.templates_string)
