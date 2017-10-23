@@ -5,6 +5,15 @@ const NAV = require('./parts/nav')
 
 fn._('nav').innerHTML = NAV('../static/logo.png', 'index')
 
+const messageAlert = (txt, time) => {
+  const elm = fn.remove(fn._('message-alert'))
+  elm.innerHTML = txt
+  elm.style.display = 'block'
+  setTimeout(() => {
+    elm.style.display = 'none'
+  }, time || 1000);
+}
+
 //Add template
 
 fn._('btn-add-template').addEventListener('click', event => {
@@ -12,6 +21,7 @@ fn._('btn-add-template').addEventListener('click', event => {
   fn._('template-string').focus()
   const text = fn._('template-string').value
   if (text) {
+    messageAlert(`added add:template-string`)
     ipcRenderer.send('add:template-string', text)
   }
 })
@@ -71,27 +81,32 @@ const handlerOnClick = event => {
       const dataset = event.target.dataset
 
       if (dataset.type === 'epic') {
+        messageAlert(`added ${dataset.type}`)
         const epic = data.storiesMember[dataset.memberId].epics[dataset.epicId]
         const format = `EPIC - ${epic.name} - ${epic.estimate}pts`
         addTextLine(format)
         console.log(epic)
 
       } else if(dataset.type === 'story') {
+        messageAlert(`added ${dataset.type}`)
         const stories = data.storiesMember[dataset.memberId].epics[dataset.epicId].stories
         stories.forEach(story => {
           if (story.id === parseInt(dataset.storyId)) {
-            const formatStory = `- ${story.name} - [#${story.id}](${story.url}) - ${story.current_state}`
+            const formatStory = `- ${story.name} - [#${story.id}](${story.url}) - ${story.current_state} - ${story.estimate}pts`
             addTextLine(formatStory)
             console.log(story)
           }
         });
       } else if(dataset.type === 'member') {
+        messageAlert(`added ${dataset.type}`)
         const member = data.storiesMember[dataset.memberId].member
         const formatMember = `## ${member.person.name}`
         addTextLine(formatMember)
       } else if(dataset.type === 'template') {
+        messageAlert(`added ${dataset.type}`)
         addTextLine(dataset.templateText)
       } else if(dataset.type === 'template:removebyid') {
+        messageAlert(`remove ${dataset.type}`)
         const id = dataset.templateId
         console.log(id);
         ipcRenderer.send('removebyid:template-string', id)

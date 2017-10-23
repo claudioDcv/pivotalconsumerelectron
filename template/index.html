@@ -8,6 +8,7 @@
     <title></title>
   </head>
   <body>
+    <div id="message-alert" class="message-alert"></div>
     <section id="nav"></section>
     <div class="container-fluid">
       <div class="form">
@@ -43,12 +44,22 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-9">
             <label for="labels">Labels</label>
-            <select id="labels" class="selectpicker form-control" data-live-search="true"></select>
+            <div class="input-group">
+              <select id="labels" class="selectpicker form-control" data-live-search="true"></select>
+              <span class="input-group-btn">
+                <button type="submit" id="getStories" class="btn btn-block btn-primary">Stories</button>
+              </span>
+            </div>
           </div>
-          <div class="col-md-12">
-            <button type="submit" id="getStories" class="btn btn-block btn-primary btn-inline-form">Stories</button>
+          <div class="col-md-3">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" id="only-me" class="btn-inline-form form-check-input">
+                Only Me
+              </label>
+            </div>
           </div>
           <div class="col-md-12">
             <hr />

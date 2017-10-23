@@ -5,6 +5,9 @@ const add = (parent, child) => parent.appendChild(child)
 
 const remove = elm => {
   let n = elm
+  if (!n) {
+    return n
+  }
   while (n.firstChild) {
       n.removeChild(n.firstChild);
   }

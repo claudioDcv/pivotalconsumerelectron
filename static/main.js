@@ -1,10 +1,90 @@
 const fn = require('../static/functions')
+
+const hmtlout = ''
+
+const _ = id => document.getElementById(id)
+const create = name => document.createElement(name)
+const text = text => document.createTextNode(text)
+const add = (parent, child) => parent.appendChild(child)
+const kebakToCamel = str => {
+  return str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+}
+const camelToKebak = str => str.replace( /([a-z])([A-Z])/g, '$1-$2' ).toLowerCase();
+const addListener = (elm, name, fn) => {
+  elm.addEventListener(name, fn, false)
+}
+
+
+console.log(camelToKebak('claudioRojasRodriguez'));
+console.log(kebakToCamel('claudio-rojas-rodriguez'));
+
+const props = (elm, _props) => {
+  if (_props) {
+    Object.keys(_props).forEach(prop => {
+      if (_props[prop] instanceof Function) {
+        addListener(elm, prop, _props[prop])
+      } else if (_props[prop] instanceof Object) {
+        elm[prop] = null
+        Object.keys(_props[prop]).forEach(style => {
+          elm[prop][style] = _props[prop][style]
+        })
+      } else {
+        elm[prop] = _props[prop]
+      }
+    });
+  }
+}
+const createChild = (elm, out) => {
+  let _elm = elm
+  let main = null
+  if (_elm.child) {
+    if (_elm.type === 'text') {
+      main = text(_elm.child)
+      add(out, main)
+    } else {
+      main = create(_elm.type)
+      props(main, _elm.props)
+      add(out, main)
+    }
+    for (var i = 0; i < _elm.child.length; i++) {
+      createChild(_elm.child[i], main)
+    }
+  } else {
+    if (_elm.type) {
+      main = create(_elm.type)
+      props(main, _elm.props)
+      add(out, main)
+      createChild([], main)
+    }
+  }
+}
+
+
+
+
 window.data = {};
 window.data.message = []
+
+
+
+
+const templatesBtnDangerClick = event => console.log(event.target);
+
 const toNumber = n => isNaN(n) ? 0 : n
+
+
+const labelsCreate = labels => {
+  let dom = ''
+  labels.forEach(elm => {
+    dom += `<span class="label" id="label-${elm.id}">${elm.name}</span>`
+  });
+  return dom
+}
+
 
 const mergeElements = data => {
 
+  console.log(_('only-me').checked);
   const stories = data.stories.value
   const epics = data.epics.value
   const orderEpics = {}
@@ -71,115 +151,144 @@ const mergeElements = data => {
   let dom = ''
 
   Object.keys(storiesMember).forEach(storyMember => {
-    const obj = storiesMember[storyMember]
-    dom += `<div class="member-box">
-    <h4>
-      <span class="added-action-icon">
-        <i
-         data-action-select
-         class="icono-plus"
-         data-type="member"
-         data-member-id="${obj.member.person.id}"
-        ></i>
-      </span>
-      <i
-        class="avatar"
-        style="background-color:#${obj.member.project_color}"
-      >${obj.member.person.initials}</i>
-      ${obj.member.person.name}
-    </h4>`
-    Object.keys(obj.epics).forEach(idEpic => {
-      const epic = obj.epics[idEpic]
-      if (epic.stories.length > 0) {
-        dom += `<li class="epic-name">
-          <span class="added-action-icon">
-            <i
-             data-action-select
-             class="icono-plus"
-             data-type="epic"
-             data-epic-id="${idEpic}"
-             data-epic-estimate="${epic.estimate}"
-             data-member-id="${obj.member.person.id}"
-            ></i></span>${epic.name} - ${epic.estimate}
-        </li>`
-      }
-      dom += '<table class="table table-hover table-sm table-responsive"><tbody>'
-      epic.stories.forEach(story => {
-        dom += '<tr class="stories">'
-        dom += `<td>
-          <div class="mark ${fn.stateToCSS(story.current_state).css}">
-          </div>
-          <strong>${fn.stateToCSS(story.current_state).txt}</strong>
-           ${story.name} - ${story.estimate} -
-           <a target="new" href="${story.url}">#${story.id}</a>
-         </td>`
-         dom += `<td>
-           <span class="added-action-icon">
-             <i
-              data-action-select
-              class="icono-plus"
-              data-type="story"
-              data-epic-id="${idEpic}"
-              data-epic-estimate="${epic.estimate}"
-              data-story-id="${story.id}"
-              data-story-estimate="${story.estimate}"
-              data-member-id="${obj.member.person.id}"
-             ></i></span>
-          </td>`
-          dom += '</tr>'
-      })
-      dom += '</tbody></table>'
-    });
-    dom += '</div>'
-  });
+    let isStories = false
+    if (!_('only-me').checked || data.me.value.id === parseInt(storyMember)) {
+      const obj = storiesMember[storyMember]
 
+      dom += `<div class="member-box">
+      <h4>
+        <span class="added-action-icon">
+          <i
+           data-action-select class="icono-plus"
+           data-type="member" data-member-id="${obj.member.person.id}"></i>
+        </span>
+        <i
+          class="avatar"
+          style="background-color:#${obj.member.project_color}"
+        >${obj.member.person.initials}</i>
+        ${obj.member.person.name}
+      </h4>`
+      Object.keys(obj.epics).forEach(idEpic => {
+        const epic = obj.epics[idEpic]
+        if (epic.stories.length > 0) {
+          isStories = true
+          dom += `<li class="epic-name">
+            <span class="added-action-icon">
+              <i
+               data-action-select
+               class="icono-plus"
+               data-type="epic"
+               data-epic-id="${idEpic}"
+               data-epic-estimate="${epic.estimate}"
+               data-member-id="${obj.member.person.id}"
+              ></i></span>${epic.name} - ${epic.estimate}
+          </li>`
+        }
+        dom += '<table class="table table-hover table-sm table-responsive"><tbody>'
+        epic.stories = epic.stories.sort((a,b) => {
+          if (a.current_state < b.current_state)
+            return -1;
+          if (a.current_state > b.current_state)
+            return 1;
+          return 0;
+        })
+        epic.stories.forEach(story => {
+          const labels = labelsCreate(story.labels)
+          dom += '<tr class="stories">'
+          dom += `<td>
+            <div class="mark ${fn.stateToCSS(story.current_state).css}">
+            </div>
+            <strong>${fn.stateToCSS(story.current_state).txt}</strong>
+             ${story.name} - ${story.estimate} -
+             <a target="new" href="${story.url}">#${story.id}</a>
+           </td>`
+
+           dom += `
+            <td>
+              ${labels}
+            </td>
+           `
+
+           dom += `<td>
+             <span class="added-action-icon">
+               <i
+                data-action-select
+                class="icono-plus"
+                data-type="story"
+                data-epic-id="${idEpic}"
+                data-epic-estimate="${epic.estimate}"
+                data-story-id="${story.id}"
+                data-story-estimate="${story.estimate}"
+                data-member-id="${obj.member.person.id}"
+               ></i></span>
+            </td>`
+            dom += '</tr>'
+        })
+        dom += '</tbody></table>'
+      });
+      // if (!isStories) {
+      //   dom = ''
+      // }
+      dom += '</div>'
+    }
+  });
   fn._('stories').innerHTML = dom
 }
 
-const templatesStringDom = templatesString => {
-  const templatesContainer = fn.remove(fn._('templates'))
-  const table = fn.create('table')
-  table.className = 'table table-sm table-responsive'
-  const tbody = fn.create('tbody')
-
-  console.log(tbody);
-  templatesString.forEach(elm => {
-    const tr = fn.create('tr')
-
-    const tdBtnAddReport = fn.create('td')
-    const span = fn.create('span')
-    const i = fn.create('i')
-    i.dataset.actionSelect = ''
-    i.className = 'icono-plus'
-    i.dataset.type = 'template'
-    i.dataset.templateText = elm.text
-    i.dataset.templateId = elm.id
-    span.className = 'added-action-icon'
-    fn.add(span, i)
-    fn.add(tdBtnAddReport, span)
-    fn.add(tr, tdBtnAddReport)
-
-    const td = fn.create('td')
-    const text = fn.text(elm.text)
-    fn.add(td, text)
-    fn.add(tr, td)
-
-    const tdBtn = fn.create('td')
-    tdBtn.style.textAlign = 'right'
-    const btn = fn.create('button')
-    const deleteText = fn.text('×')
-    btn.dataset.actionSelect = ''
-    btn.dataset.type = 'template:removebyid'
-    btn.dataset.templateId = elm.id
-    btn.className = 'btn btn-sm btn-danger'
-    fn.add(btn, deleteText)
-    fn.add(tdBtn, btn)
-    fn.add(tr, tdBtn)
-
-    fn.add(tbody, tr)
-  })
-  fn.add(table, tbody)
-  fn.add(templatesContainer, table)
+const templatesStringDom = tstring => {
+  createChild({
+    type: 'table',
+    props: {
+      className: 'table table-sm table-responsive',
+    },
+    child: [{
+      type: 'tbody',
+      child: tstring.map(elm => ({
+          type: 'tr',
+          child: [{
+            type: 'td',
+            child: [{
+              type: 'span',
+              props: { className: 'added-action-icon' },
+              child: [{
+                type: 'i',
+                props: {
+                  dataset: {
+                    actionSelect: '',
+                    type: 'template',
+                    templateText: elm.text,
+                    templateId: elm.id,
+                  },
+                  className: 'icono-plus',
+                }
+              }]
+            }]
+          },
+          {
+            type: 'td',
+            props: { style: { paddingTop: '10px' } },
+            child: [{ type: 'text', child: elm.text }],
+          },
+          {
+          type: 'td',
+          child: [{
+            type: 'button',
+            props: {
+              className: 'btn btn-sm btn-danger',
+              dataset: {
+                actionSelect: '',
+                type: 'template:removebyid',
+                templateId: elm.id,
+              },
+              style: { textAlign: 'right' },
+              click: templatesBtnDangerClick,
+            },
+            child: [0].map(e => ({ type: 'text', child: '×' })),
+          }]
+        }]
+        }))
+    }]
+  }, fn.remove(fn._('templates')))
 }
 
 
