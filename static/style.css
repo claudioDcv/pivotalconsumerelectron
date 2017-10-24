@@ -2,6 +2,10 @@
     background: #CCCCCC;
 }
 
+html, body {
+  background: #222d38;
+}
+
 .message-alert {
   display: none;
   padding: 5px 10px;
@@ -47,10 +51,10 @@ textarea[name="slack-text"] {
 .member-box {
   margin: 0 -15px;
   padding: 10px 15px;
-  border-bottom: solid 1px #d3d4d5;
+  border-bottom: solid 1px #222d38;
 }
 .member-box:hover {
-  background: #ffffff;
+  background: #222d38;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.49);
 }
 
@@ -93,12 +97,13 @@ textarea[name="slack-text"] {
   top: 0;
 }
 .container, .container-fluid > div{
-  background: #f8f9fa;
-  border: solid 1px #d3d4d5;
+  background: #343a40;
+  border: solid 1px #222d38;
   padding: 15px;
   margin-bottom: 15px;
   border-radius: 5px;
   margin-top: 85px;
+  color: #FFFFFF;
 }
 
 
@@ -116,4 +121,70 @@ textarea[name="slack-text"] {
   border-radius: 50%;
   border: solid 2px #464a4e;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.74);
+}
+
+
+/*TRELLO*/
+#boards {
+  overflow: scroll;
+}
+.boards {
+
+}
+.boards .board{
+  width: 300px;
+  background: #222d38;
+  margin: 0 10px;
+  padding: 0;
+  border-bottom: solid 1px #222d38;
+  display: inline-block;
+  vertical-align: top;
+  border: solid 2px #222d38;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 700px;
+}
+.boards .board h2{
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 10px 0px 10px;
+  background: #222d38;
+  margin: 0 0 10px 0;
+}
+.boards .board .cards{
+  height: 620px;
+  overflow: scroll;
+  width: 100%;
+}
+.boards .board .cards .card{
+  margin: 5px 10px;
+}
+.boards .board .cards .card .badge{
+  margin: 0 4px;
+}
+.boards .board .cards .card .badge:first-child{
+  margin-left: 0;
+}
+.boards .board .cards .card .badge:last-child{
+  margin-right: 0;
+}
+
+.table-dark, .table-dark>td, .table-dark>th {
+    background-color: #343a40;
+}
+.table.table-dark td, .table.table-dark th {
+  border-top: 1px solid #222d38;
+}
+
+.member-box:hover
+.table-dark {
+  background-color: #222d38;
+}
+
+.member-box:hover
+.table-dark td,
+.member-box:hover
+.table-dark th {
+    border-top: 1px solid #33393f;
 }

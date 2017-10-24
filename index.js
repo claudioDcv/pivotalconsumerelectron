@@ -21,7 +21,7 @@ let createWindow = () => {
   }))
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
   events.mainWindowEvent(store, mainWindow)
 }
 

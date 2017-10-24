@@ -1,6 +1,7 @@
 const { ipcRenderer } = require('electron')
 const consumer = require('../static/consumer')
 const consumerSlack = require('../static/consumerSlack')
+
 const NAV = require('./parts/nav')
 
 fn._('nav').innerHTML = NAV('../static/logo.png', 'index')

@@ -1,5 +1,5 @@
 const NAV = (logo, active) => `
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">
     <img src="${logo}" width="30" height="30" class="d-inline-block align-top" alt="">
     Pivotal Consumer
@@ -17,6 +17,9 @@ const NAV = (logo, active) => `
       </li>
       <li class="nav-item ${active === 'configurationSlack' && 'active'}">
         <a class="nav-link" href="configurationSlack.html">Slack configuration</a>
+      </li>
+      <li class="nav-item ${active === 'configurationTrello' && 'active'}">
+        <a class="nav-link" href="configurationTrello.html">Trello configuration</a>
       </li>
     </ul>
   </div>

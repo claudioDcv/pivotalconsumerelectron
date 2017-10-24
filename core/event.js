@@ -77,6 +77,31 @@ const mainEvent = store => {
     )
   })
 
+
+  ipcMain.on('save:trelloCredentials', (event, trelloServerToken, trelloKey, trelloIdBoard) => {
+    console.log(trelloServerToken, trelloKey, trelloIdBoard)
+    store.set('trello-server-token', trelloServerToken)
+    store.set('trello-key', trelloKey)
+    store.set('trello-id-board', trelloIdBoard)
+
+    event.sender.send(
+      'reply:trelloCredentials',
+      store.get('trello-server-token'),
+      store.get('trello-key'),
+      store.get('trello-id-board')
+    )
+
+  })
+
+  ipcMain.on('init:trelloCredentials', event => {
+    event.sender.send(
+      'init:trelloCredentials',
+      store.get('trello-server-token'),
+      store.get('trello-key'),
+      store.get('trello-id-board')
+    )
+  })
+
 //SLACK
   ipcMain.on('slack_index:init', (event, arg)=> {
     event.sender.send(

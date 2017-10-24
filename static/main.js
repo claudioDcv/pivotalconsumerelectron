@@ -14,10 +14,6 @@ const addListener = (elm, name, fn) => {
   elm.addEventListener(name, fn, false)
 }
 
-
-console.log(camelToKebak('claudioRojasRodriguez'));
-console.log(kebakToCamel('claudio-rojas-rodriguez'));
-
 const props = (elm, _props) => {
   if (_props) {
     Object.keys(_props).forEach(prop => {
@@ -76,7 +72,7 @@ const toNumber = n => isNaN(n) ? 0 : n
 const labelsCreate = labels => {
   let dom = ''
   labels.forEach(elm => {
-    dom += `<span class="label" id="label-${elm.id}">${elm.name}</span>`
+    dom += `<span class="badge mx-1 badge-success" id="label-${elm.id}">${elm.name}</span>`
   });
   return dom
 }
@@ -181,10 +177,10 @@ const mergeElements = data => {
                data-epic-id="${idEpic}"
                data-epic-estimate="${epic.estimate}"
                data-member-id="${obj.member.person.id}"
-              ></i></span>${epic.name} - ${epic.estimate}
+              ></i></span>${epic.name} - ${epic.estimate}pts
           </li>`
         }
-        dom += '<table class="table table-hover table-sm table-responsive"><tbody>'
+        dom += '<table class="table table-hover table-sm table-responsive table-dark"><tbody>'
         epic.stories = epic.stories.sort((a,b) => {
           if (a.current_state < b.current_state)
             return -1;
@@ -199,7 +195,7 @@ const mergeElements = data => {
             <div class="mark ${fn.stateToCSS(story.current_state).css}">
             </div>
             <strong>${fn.stateToCSS(story.current_state).txt}</strong>
-             ${story.name} - ${story.estimate} -
+             ${story.name} - ${story.estimate}pts -
              <a target="new" href="${story.url}">#${story.id}</a>
            </td>`
 
@@ -239,7 +235,7 @@ const templatesStringDom = tstring => {
   createChild({
     type: 'table',
     props: {
-      className: 'table table-sm table-responsive',
+      className: 'table table-sm table-responsive table-dark',
     },
     child: [{
       type: 'tbody',

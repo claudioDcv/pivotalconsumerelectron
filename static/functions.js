@@ -63,6 +63,57 @@ console.log(render(template, {
     profile: { age: 29 }
 }));
 
+const kebakToCamel = str => {
+  return str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+}
+const camelToKebak = str => str.replace( /([a-z])([A-Z])/g, '$1-$2' ).toLowerCase();
+const addListener = (elm, name, fn) => {
+  elm.addEventListener(name, fn, false)
+}
+
+const props = (elm, _props) => {
+  if (_props) {
+    Object.keys(_props).forEach(prop => {
+      if (_props[prop] instanceof Function) {
+        addListener(elm, prop, _props[prop])
+      } else if (_props[prop] instanceof Object) {
+        elm[prop] = null
+        Object.keys(_props[prop]).forEach(style => {
+          elm[prop][style] = _props[prop][style]
+        })
+      } else {
+        elm[prop] = _props[prop]
+      }
+    });
+  }
+}
+const createChild = (elm, out) => {
+  let _elm = elm
+  let main = null
+  if (_elm.child) {
+    if (_elm.type === 'text') {
+      main = text(_elm.child)
+      add(out, main)
+    } else {
+      main = create(_elm.type)
+      props(main, _elm.props)
+      add(out, main)
+    }
+    for (var i = 0; i < _elm.child.length; i++) {
+      createChild(_elm.child[i], main)
+    }
+  } else {
+    if (_elm.type) {
+      main = create(_elm.type)
+      props(main, _elm.props)
+      add(out, main)
+      createChild([], main)
+    }
+  }
+}
+
+
+
 module.exports = {
   _,
   create,
@@ -71,4 +122,8 @@ module.exports = {
   stateToCSS,
   remove,
   render,
+  createChild,
+  kebakToCamel,
+  camelToKebak,
+  addListener,
 }

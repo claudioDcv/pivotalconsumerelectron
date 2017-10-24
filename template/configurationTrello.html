@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <title></title>
+  </head>
+  <body>
+    <section id="nav"></section>
+    <div class="container-fluid">
+      <div>
+        <div class="row">
+          <div class="col-12">
+            <form>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="token">Server TOKEN</label>
+                      <input type="text" class="form-control" value="" id="trelloServerToken" placeholder="YOUR TOKEN">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label for="token">Key</label>
+                      <input type="password" class="form-control" id="trelloKey" placeholder="YOUR KEY">
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="token">Board ID</label>
+                      <input type="text" class="form-control" id="trelloIdBoard" placeholder="YOUR ID BOARD">
+                    </div>
+                  </div>
+                  <div class="col-md-2"><button type="submit" id="btn" class="btn btn-block btn-primary btn-inline-form">Submit</button></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <a href="https://trello.readme.io/docs/get-started" target="_blank">Trello API</a>
+                  </div>
+                </div>
+              </form>
+          </div>
+          <div class="col-12">
+            <hr />
+            <div id="boards"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../static/comun.js" charset="utf-8"></script>
+    <script src="../node_modules/popper.js/dist/umd/popper.min.js" charset="utf-8"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="./configurationTrello.js" charset="utf-8"></script>
+  </body>
+</html>
