@@ -126,7 +126,7 @@ textarea[name="slack-text"] {
 
 /*TRELLO*/
 #boards {
-  overflow: scroll;
+  overflow-x: scroll;
 }
 .boards {
 
@@ -154,7 +154,7 @@ textarea[name="slack-text"] {
 }
 .boards .board .cards{
   height: 620px;
-  overflow: scroll;
+  overflow-y: scroll;
   width: 100%;
 }
 .boards .board .cards .card{
