@@ -11,7 +11,7 @@ let createWindow = () => {
   mainWindow = new BrowserWindow({
     width,
     height,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#222d38',
   })
 
   mainWindow.loadURL(url.format({
