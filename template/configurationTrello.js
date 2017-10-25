@@ -3,6 +3,29 @@ const fn = require('../static/functions')
 const consumerTrello = require('../static/consumerTrello')
 const NAV = require('./parts/nav')
 
+const MemberBadge = g => {
+  return ({
+    type: 'span',
+    props: { className: 'badge badge-success' },
+    child: [{ type: 'text', child: g.fullName }]
+  })
+}
+
+const Board = f => {
+  return ({
+    type: 'div',
+      props: { className: 'card text-white bg-dark' },
+      child: [{
+      	type: 'div',
+      	props: { className: 'card-body' },
+      	child: [{ type: 'text', child: f.name,}, {
+      		type: 'div',
+      		child: f.members.map(g => MemberBadge(g))
+      	}]
+      }]
+    })
+}
+
 const initDom = (trelloServerToken, trelloKey, trelloIdBoard) => {
   // actions
   fn._('nav').innerHTML = NAV('../static/logo.png', 'configurationTrello')
@@ -26,8 +49,6 @@ const initDom = (trelloServerToken, trelloKey, trelloIdBoard) => {
           arrBoards.push(_boards[elem])
         });
 
-        console.log(arrBoards);
-
         fn.createChild({
           type: 'div',
           props: {
@@ -38,50 +59,16 @@ const initDom = (trelloServerToken, trelloKey, trelloIdBoard) => {
           },
           child: arrBoards.map(e => ({
             type: 'div',
-            props: {
-              className: 'board',
-            },
+            props: { className: 'board' },
             child: [{
               type: 'h2',
-              child: [{
-                type: 'text',
-                child: e.name,
-              }]
+              child: [{ type: 'text', child: e.name }]
             },{
               type: 'div',
-              props: {
-                className: 'cards',
-              },
-              child: e.cards.map(f => ({
-                type: 'div',
-                props: {
-                  className: 'card text-white bg-dark',
-                },
-                child: [{
-                  type: 'div',
-                  props: {
-                    className: 'card-body',
-                  },
-                  child: [{
-                    type: 'text',
-                    child: f.name,
-                  },{
-                    type: 'div',
-                    child: f.members.map(g => ({
-                      type: 'span',
-                      props: {
-                        className: 'badge badge-success',
-                      },
-                      child: [{
-                        type: 'text',
-                        child: g.fullName,
-                      }]
-                    }))
-                  }]
-                }]
-              }))
+              props: { className: 'cards' },
+              child: e.cards.map(f => Board(f)),
             }]
-          })),
+          }))
         }, fn._('boards'))
 
       })

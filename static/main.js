@@ -60,8 +60,19 @@ const createChild = (elm, out) => {
 
 window.data = {};
 window.data.message = []
+window.data.changedStories = {}
 
-
+const optionsCreator = (currentState) => {
+  let dom = ''
+  Object.keys(fn.states).forEach(elem => {
+    if (elem === currentState) {
+      dom += `<option selected value="${elem}">${fn.stateToCSS(elem).txt}`
+    } else {
+      dom += `<option value="${elem}">${fn.stateToCSS(elem).txt}`
+    }
+  });
+  return dom
+}
 
 
 const templatesBtnDangerClick = event => console.log(event.target);
@@ -190,11 +201,25 @@ const mergeElements = data => {
         })
         epic.stories.forEach(story => {
           const labels = labelsCreate(story.labels)
-          dom += '<tr class="stories">'
+          dom += `<tr class="stories story-${story.id}">`
+          dom += `<td>
+            <select
+              style="width:125px"
+              class="form-control"
+              data-action-change
+              data-type="change-state"
+              data-epic-id="${idEpic}"
+              data-epic-estimate="${epic.estimate}"
+              data-story-id="${story.id}"
+              data-story-estimate="${story.estimate}"
+              data-member-id="${obj.member.person.id}"
+            >
+              ${optionsCreator(story.current_state)}
+            </select>
+          </td>`
           dom += `<td>
             <div class="mark ${fn.stateToCSS(story.current_state).css}">
             </div>
-            <strong>${fn.stateToCSS(story.current_state).txt}</strong>
              ${story.name} - ${story.estimate}pts -
              <a target="new" href="${story.url}">#${story.id}</a>
            </td>`
@@ -318,11 +343,6 @@ function initDom(args) {
 
   consumer.get(token, project_id, 'epics', obj => {
     window.data.epics = obj
-    // let n = ''
-    // for (var i = 0; i < obj.value.length; i++) {
-    //   n += `<option value="${obj.value[i].id}">${obj.value[i].name}</option>`
-    // }
-    // fn._('epics').innerHTML = n
   })
 
   templatesStringDom(data.templates_string)

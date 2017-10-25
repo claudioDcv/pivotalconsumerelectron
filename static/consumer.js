@@ -65,8 +65,36 @@ const getStories = (token, project_id, endpoint, cb) => {
   })
 }
 
+const updateStory = (token, project_id, story, cb) => {
+  const s = story
+  const id = s.id
+  delete s.id
+  misCabeceras.set('X-TrackerToken', token)
+
+  const fd = new FormData()
+  fd.append('current_state', s.current_state)
+  const miInit = { method: 'PUT',
+               headers: misCabeceras,
+               mode: 'cors',
+               cache: 'default',
+               body: fd,
+             };
+
+  fetch(`${api}/projects/${project_id}/stories/${id}`,miInit)
+  .then( function(response){
+    response.json().then(function(json) {
+      const obj = {
+        name: 'story',
+        value: json,
+      }
+      cb(obj)
+    });
+  })
+}
+
 module.exports = {
   getMe,
   get,
   getStories,
+  updateStory,
 }

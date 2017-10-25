@@ -93,6 +93,9 @@ const handlerOnClick = event => {
         const stories = data.storiesMember[dataset.memberId].epics[dataset.epicId].stories
         stories.forEach(story => {
           if (story.id === parseInt(dataset.storyId)) {
+            if (window.data.changedStories[story.id]) {
+              story = window.data.changedStories[story.id]
+            }
             const formatStory = `- ${story.name} - [#${story.id}](${story.url}) - ${story.current_state} - ${story.estimate}pts`
             addTextLine(formatStory)
             console.log(story)
@@ -118,3 +121,35 @@ const handlerOnClick = event => {
 }
 
 document.addEventListener('click', handlerOnClick, false)
+
+
+const handlerOnChange = event => {
+  const dataset = event.target.dataset
+  if (dataset.type === 'change-state') {
+
+    const project_id = window.data.project_id
+    const token = window.data.token
+    const v = event.target.value
+    const story = {
+      id: parseInt(dataset.storyId),
+      current_state: v,
+    }
+
+    consumer.updateStory(token, project_id, story, obj => {
+      window.data.changedStories[obj.value.id] = obj.value
+      const trs = document.querySelectorAll(`.story-${obj.value.id}`)
+        Object.keys(trs).forEach(i => {
+          const marks = trs[i].querySelectorAll('.mark')
+          Object.keys(marks).forEach(j => {
+            marks[j].className = `mark ${fn.stateToCSS(obj.value.current_state).css}`
+          });
+        });
+
+      // window.data.stories = obj
+      // mergeElements(window.data)
+    })
+    console.log(v, dataset);
+  }
+}
+
+document.addEventListener('change', handlerOnChange, false)

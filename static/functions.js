@@ -14,16 +14,18 @@ const remove = elm => {
   return n
 }
 
+const states = {
+  accepted: { css: 'bg-success', txt: 'Aceptada' },
+  delivered: { css: 'bg-warning', txt: 'Entregado' },
+  unstarted: { css: 'bg-secondary', txt: 'No Iniciada' },
+  unscheduled: { css: 'bg-danger', txt: 'Sin Planificar' },
+  finished: { css: 'bg-success', txt: 'Finalizada' },
+  started: { css: 'bg-success', txt: 'Iniciada' },
+}
+
 const stateToCSS = state => {
   const defaultobj = { css: 'bg-success', txt: state }
-  const obj = {
-    accepted: { css: 'bg-success', txt: 'Aceptada' },
-    delivered: { css: 'bg-warning', txt: 'Entregado' },
-    unstarted: { css: 'bg-secondary', txt: 'No Iniciada' },
-    unscheduled: { css: 'bg-danger', txt: 'Sin Planificar' },
-    finished: { css: 'bg-success', txt: 'Finalizada' },
-    started: { css: 'bg-success', txt: 'Iniciada' },
-  }
+  const obj = states
   return obj[state] || defaultobj
 }
 
@@ -126,4 +128,5 @@ module.exports = {
   kebakToCamel,
   camelToKebak,
   addListener,
+  states,
 }
